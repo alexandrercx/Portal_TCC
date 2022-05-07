@@ -1,0 +1,143 @@
+﻿@model ServicoAssociadoWeb.Integrations.Models.APIServicosAssociado.ResponseAgendamentoViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Detalhes do Agendamento</h1>
+
+<div>
+    @*<h4>Agendamento</h4>*@
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            Id
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-3">
+            Tipo de Atendimento
+        </dt>
+        <dd class="col-sm-9">
+            @Html.HiddenFor(model => model.TipoAtendimento.Id)
+            @Html.DisplayFor(model => model.TipoAtendimento.Nome)
+        </dd>
+        <dt class="col-sm-3">
+            Data/Hora do Atendimento
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.DataAtendimento)
+        </dd>
+        <dt class="col-sm-3">
+            Data/HOra do Agendamento
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.DataAgendamento)
+        </dd>
+    </dl>
+    <h4>Associado</h4>
+    <hr />
+    <dl class="row">
+        <dd class="col-sm-12">
+            @Html.HiddenFor(model => model.Associado.Id)
+        </dd>
+        <dt class="col-sm-3">
+            Nº Documento
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Associado.Documento)
+        </dd>
+        <dt class="col-sm-3">
+            Nome
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Associado.Nome)
+        </dd>
+        @*<dt class="col-sm-3">
+            Ativo
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Associado.IndAtivo)
+        </dd>*@        
+    </dl>
+    <h4>Conveniado</h4>
+    <hr />
+    <dl class="row">
+        <dd class="col-sm-12">
+            @Html.HiddenFor(model => model.Conveniado.Id)
+        </dd>
+        <dt class="col-sm-3">
+            Nº Documento
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Conveniado.Documento)
+        </dd>
+        <dt class="col-sm-3">
+            Nome
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Conveniado.Nome)
+        </dd>
+        <dt class="col-sm-3">
+            Doc. Profissional
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Conveniado.DocProfissional)
+        </dd>
+    </dl>
+    <h4>Endereço</h4>
+    <hr />
+    <dl class="row">
+        <dd class="col-sm-12">
+            @Html.HiddenFor(model => model.Endereco.Id)
+        </dd>
+        <dt class="col-sm-3">
+            Endereço
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Endereco.Logradouro)
+        </dd>
+        <dt class="col-sm-3">
+            Nº
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Endereco.Numero)
+        </dd>
+        <dt class="col-sm-3">
+            Complemento
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Endereco.Complemento)
+        </dd>
+        <dt class="col-sm-3">
+            Bairro
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Endereco.Bairro)
+        </dd>
+        <dt class="col-sm-3">
+            CEP
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Endereco.Cep)
+        </dd>
+        <dt class="col-sm-3">
+            Cidade
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Endereco.Cidade)
+        </dd>
+        <dt class="col-sm-3">
+            UF
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Endereco.Uf)
+        </dd>
+    </dl>
+</div>
+<div>
+    @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
+    <a asp-action="Index">Voltar</a>
+</div>
