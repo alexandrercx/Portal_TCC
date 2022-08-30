@@ -6,6 +6,7 @@ using ServicoAssociadoWeb.Enums;
 using ServicoAssociadoWeb.Integrations.Api;
 using ServicoAssociadoWeb.Integrations.Client;
 using ServicoAssociadoWeb.Integrations.Models.APIServicosAssociado;
+using ServicoAssociadoWeb.Models;
 using ServicoAssociadoWeb.Services;
 using System;
 using System.Collections;
@@ -64,6 +65,7 @@ namespace ServicoAssociadoWeb.Controllers
          if (User.Identity.IsAuthenticated)
          {
             ViewBag.ListTipoAtendimento = GetTiposAtendimento().Select(x => new SelectListItem(x.Nome, x.Id.ToString())).ToList();
+            ViewBag.ListCoveniados = GetConveniados().Select(x => new SelectListItem(x.Nome, x.Id.ToString())).ToList();
             return View();
          }
          else
@@ -78,6 +80,7 @@ namespace ServicoAssociadoWeb.Controllers
          try
          {
             ViewBag.ListTipoAtendimento = GetTiposAtendimento().Select(x => new SelectListItem(x.Nome, x.Id.ToString())).ToList();
+            ViewBag.ListCoveniados = GetConveniados().Select(x => new SelectListItem(x.Nome, x.Id.ToString())).ToList();
 
             if (ModelState.IsValid)
             {
@@ -86,7 +89,7 @@ namespace ServicoAssociadoWeb.Controllers
                   TipoAtendimentoId = int.Parse(collection["TipoAtendimentoId"]),
                   AssociadoId = long.Parse(User.Claims.First(x => x.Type.Equals(ClaimTypes.NameIdentifier.ToString(), StringComparison.OrdinalIgnoreCase))?.Value),
                   ConveniadoId = int.Parse(collection["ConveniadoId"]),
-                  EnderecoId = int.Parse(collection["EnderecoId"]),
+                  EnderecoId = long.Parse(User.Claims.First(x => x.Type.Equals(ClaimTypes.NameIdentifier.ToString(), StringComparison.OrdinalIgnoreCase))?.Value),
                   DataAtendimento = DateTime.Parse(collection["DataAtendimento"])
                };
 
@@ -131,6 +134,16 @@ namespace ServicoAssociadoWeb.Controllers
                 new ResponseTipoAtendimentoViewModel(){ Id = 1, Nome ="Consulta Presencial"},
                 new ResponseTipoAtendimentoViewModel(){ Id = 2, Nome ="Telemedicina"},
                 new ResponseTipoAtendimentoViewModel(){ Id = 3, Nome ="Exame"}
+            };
+      }
+
+      private List<IdNomeViewModel> GetConveniados()
+      {
+         return new List<IdNomeViewModel>()
+            {
+                new IdNomeViewModel(){ Id = 1, Nome ="Clínica Médica"},
+                new IdNomeViewModel(){ Id = 2, Nome ="Consultório"},
+                new IdNomeViewModel(){ Id = 3, Nome ="Dr. Jose Silva"}
             };
       }
 

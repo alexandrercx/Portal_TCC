@@ -35,7 +35,38 @@ namespace ServicoAssociadoWeb.Controllers
          return new List<ResponsePlanoViewModel>()
             {
                 new ResponsePlanoViewModel(){ Id = 1, Nome ="Saúde - Básico", ValorBase = 50},
-                new ResponsePlanoViewModel(){ Id = 2, Nome ="Saúde - Intermediário", ValorBase = 100}
+                new ResponsePlanoViewModel(){ Id = 2, Nome ="Saúde - Intermediário", ValorBase = 100},
+                new ResponsePlanoViewModel(){ Id = 2, Nome ="Saúde - VIP", ValorBase = 200}
+            };
+      }
+
+
+      private List<IdNome2ViewModel> GetTiposConta()
+      {
+         return new List<IdNome2ViewModel>()
+            {
+                new IdNome2ViewModel(){ Id = "CC", Nome ="Corrente"},
+                new IdNome2ViewModel(){ Id = "PG", Nome ="Pagamento"},
+                new IdNome2ViewModel(){ Id = "PP", Nome ="Poupança"}
+            };
+      }
+
+      private List<IdNomeViewModel> GetTiposEndereco()
+      {
+         return new List<IdNomeViewModel>()
+            {
+                new IdNomeViewModel(){ Id = 1, Nome ="Comercial"},
+                new IdNomeViewModel(){ Id = 2, Nome ="Residencial"}
+            };
+      }
+
+      private List<IdNomeViewModel> GetTiposTelefone()
+      {
+         return new List<IdNomeViewModel>()
+            {
+                new IdNomeViewModel(){ Id = 1, Nome ="Celular"},
+                new IdNomeViewModel(){ Id = 2, Nome ="Comercial"},
+                new IdNomeViewModel(){ Id = 3, Nome ="Residencial"}
             };
       }
 
@@ -46,6 +77,9 @@ namespace ServicoAssociadoWeb.Controllers
          else
          {
             ViewBag.ListPlanos = GetPlanos().Select(x => new SelectListItem(x.Nome, x.Id.ToString())).ToList();
+            ViewBag.ListTipoConta = GetTiposConta().Select(x => new SelectListItem(x.Nome, x.Id.ToString())).ToList();
+            ViewBag.ListTipoEndereco = GetTiposEndereco().Select(x => new SelectListItem(x.Nome, x.Id.ToString())).ToList();
+            ViewBag.ListTipoTelefone = GetTiposTelefone().Select(x => new SelectListItem(x.Nome, x.Id.ToString())).ToList();
             return View();
          }
       }
@@ -56,12 +90,17 @@ namespace ServicoAssociadoWeb.Controllers
       {
          try
          {
+            ViewBag.ListPlanos = GetPlanos().Select(x => new SelectListItem(x.Nome, x.Id.ToString())).ToList();
+            ViewBag.ListTipoConta = GetTiposConta().Select(x => new SelectListItem(x.Nome, x.Id.ToString())).ToList();
+            ViewBag.ListTipoEndereco = GetTiposEndereco().Select(x => new SelectListItem(x.Nome, x.Id.ToString())).ToList();
+            ViewBag.ListTipoTelefone = GetTiposTelefone().Select(x => new SelectListItem(x.Nome, x.Id.ToString())).ToList();
+
             var associado = _IGatewayApi.ApiAssociadoGet(model.Email);
 
             if ((associado?.Id ?? 0) > 0)
             {
                ViewBag.Alert = CommonServices.ShowAlert(Alerts.Warning, "E-mail já cadastrado.");
-               return PartialView("Register");
+               return PartialView("Register", model);
             }
             else
             {
@@ -76,7 +115,7 @@ namespace ServicoAssociadoWeb.Controllers
                   NomeMae = model.NomeMae,
                   PisPasep = model.PisPasep,
                   Senha = model.Senha,
-                  PlanoId = 1,
+                  PlanoId = model.PlanoId,
                   Ativo = "S"
                };
 
@@ -98,7 +137,7 @@ namespace ServicoAssociadoWeb.Controllers
                    new Integrations.Models.APIAssociado.PostTelefoneViewModel()
                    {
                       Ddd = model.DDD,
-                      Ddi = model.DDI,
+                      Ddi = "+55",
                       Numero = model.NumeroTelefone,
                       TipoTelefone = model.TipoTelefone
                    });
@@ -117,11 +156,17 @@ namespace ServicoAssociadoWeb.Controllers
                var response = _IGatewayApi.ApiAssociadoPost(request);
 
                if (response.Id > 0)
+               {
                   ViewBag.Alert = CommonServices.ShowAlert(Alerts.Success, $"Associado {response.Id} cadastrado com sucesso.");
+                  return View("Register", new AssociadoViewModel());
+               }
                else
+               {
                   ViewBag.Alert = CommonServices.ShowAlert(Alerts.Warning, "Erro no cadastro de associado.");
+                  return PartialView("Register", model);
+               }
 
-               return PartialView("Register");
+
             }
          }
          catch (Exception ex)
